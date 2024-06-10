@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three.js Dice Roller | Codrops</title>
+  <meta name="description" content="Demo for the tutorial on how to code a dice roller with Three.js and cannon-es" />
+  <meta name="keywords" content="3d dice, three.js, cannon-es, webgl, rolling dice" />
+  <meta name="author" content="Codrops" />
+  <link rel="shortcut icon" href="favicon.ico">
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" type="text/css" href="/base.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+  <script>
+    document.documentElement.className = "js";
+    var supportsCssVars = function() {
+      var e, t = document.createElement("style");
+      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e;
+    };
+    supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");
+  </script>
+  <script src="//tympanus.net/codrops/adpacks/analytics.js"></script>
+</head>
+<body>
+  <main>
+    <div class="content">
+      <canvas id="canvas"></canvas>
+      <div class="ui-controls">
+        <div class="score graffiti-text"> <span id="score-result"></span></div>
+        <button id="roll-btn">Throw the dice</button>
+      </div>
+    </div>
+  </main>
+  <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.138.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="https://tympanus.net/codrops/adpacks/cda_sponsor.js"></script>
+  <script type="module" src="/main.js"></script>
+  <script>
+    const socket = io();
+
+    // Register the user ID and room ID with the server
+    const userId = 'user123'; // Replace with actual user ID logic
+    const roomId = 'room1'; // Replace with actual room ID logic
+    socket.emit('register', userId, roomId);
+
+    // Listen for the "throwDice" event from the server
+    socket.on('throwDice', () => {
+      // alert('The dice was thrown!'); // Replace with actual logic (e.g., play dice animation
+      document.getElementById('roll-btn').click();
+      sendScoreResult()
+    });
+
+    // button click event
+    // document.getElementById('roll-btn').addEventListener('click', () => {
+    //   socket.emit('throwDice', roomId);
+    // });
+
+    // On your Express server, serve this script as part of the iframe content
+function sendScoreResult() {
+    const scoreResult = document.getElementById('score-result').innerText;
+    window.parent.postMessage({ score: scoreResult }, 'http://localhost:5173');
+}
+
+// Call sendScoreResult whenever the score changes
+// You can use a MutationObserver here if needed
+const observer = new MutationObserver(sendScoreResult);
+observer.observe(document.getElementById('score-result'), { childList: true, subtree: true });
+
+  </script>
+</body>
+</html>

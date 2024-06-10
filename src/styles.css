@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	background-color: #111827;
+}
+
+.graffiti-text {
+	font-family: 'Permanent Marker', cursive;
+    color: #0a4e63;
+}
+
+.shadow {
+	-webkit-filter: drop-shadow( 2px 1px 1px rgba(0, 0, 0, .2));
+	filter: drop-shadow( 2px 1px 1px rgba(0, 0, 0, .2));
+}
