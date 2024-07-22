@@ -49,7 +49,7 @@ export class SocketService {
   }
 
   roomMessage(sessionId: string, message: any): void {
-    console.log('roomMessage socket service called')
+    //console.log('roomMessage socket service called')
     this.socket.emit('send_message_to_room',sessionId, message);
   }
 

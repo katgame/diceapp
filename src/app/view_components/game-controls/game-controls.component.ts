@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { DiceService } from '../../services/game-api.service';
@@ -66,7 +66,9 @@ import { register } from 'swiper/element/bundle';
         </div> -->
         <!-- Avatars and Scores Section -->
         <div class="flex justify-center space-x-8 my-4">
-            <player-avatar  *ngFor="let player of sessionInfo.sessionInfo.gameSession" [player]="player"></player-avatar>           
+            <div *ngIf="sessionInfo">  
+                <player-avatar  *ngFor="let player of sessionInfo.sessionInfo.gameSession" [player]="player"></player-avatar>           </div>
+           
         </div>
         
         <!-- Actions Panel -->
@@ -132,6 +134,7 @@ export default class GameControlsComponent implements OnInit, AfterViewInit {
         private gameService: GameService,
         private ngZone: NgZone,
         private socketService: SocketService,
+        private cdr: ChangeDetectorRef,
     ) {
         
 
@@ -144,9 +147,9 @@ export default class GameControlsComponent implements OnInit, AfterViewInit {
     }
     ngAfterViewInit() {
         // Check if the user is logged in
-        if(!this.sessionInfo) { 
-            this.exitGame(null);
-        }
+        // if(!this.sessionInfo) { 
+        //     this.exitGame(null);
+        // }
     }
 
 

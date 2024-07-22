@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 const TOKEN_KEY = 'auth-token';//global variable for the storage name for our authentication token
 const USER_KEY = 'auth-user';//global variable for the storage name for our authenticated user
 const REQUEST_SESSION = 'request-session';//global variable for the storage name for our authenticated user
+const SESSION_DATA = 'session-data';//global variable for the storage name for our authenticated user
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,7 @@ export class TokenStorageService {
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     }
   }
+
 
   public saveSessionRequestInformation(session : any) {
     if (isPlatformBrowser(this.platformId)) {

@@ -123,7 +123,7 @@ export class GameDataStoreService {
       this.state.$playerAccount.set(data.userAccount);
     } 
     public setrequestSessionInfo = (data :any) => {
-      this.state.$requestSessionInfo.set(data);
+     // this.state.$requestSessionInfo.set(data);
     } 
     // Getters 
 

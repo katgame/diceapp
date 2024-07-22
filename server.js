@@ -11,7 +11,12 @@ const port = 3000;
 const app = express();
 
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Replace with your Angular app's URL
+    methods: ["GET", "POST"]
+  }
+});
 
 const rooms = {}; // To store room IDs and their corresponding socket IDs
 //const Round = { id: "", players: [], active: false, currentPlayerIndex: 0 };
@@ -28,76 +33,76 @@ class Round {
   }
 }
 //Middleware
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Define some array variables
 
-let data = Array(0);
-let currentData = Array(0);
-const program = async () => {
-  console.log("program running ");
-  const connection = mysql.createConnection({
-    host: "160.119.253.205",
-    post: "3306",
-    user: "bhakiAPI",
-    password: "*X8kl?_o2q2_",
-    db: "dice",
-  });
+// let data = Array(0);
+// let currentData = Array(0);
+// const program = async () => {
+//   console.log("program running ");
+//   const connection = mysql.createConnection({
+//     host: "160.119.253.205",
+//     post: "3306",
+//     user: "bhakiAPI",
+//     password: "*X8kl?_o2q2_",
+//     db: "dice",
+//   });
 
-  const instance = new MySQLEvents(connection, {
-    startAtEnd: true,
-  });
+//   const instance = new MySQLEvents(connection, {
+//     startAtEnd: true,
+//   });
 
-  await instance.start();
+//   await instance.start();
 
-  instance.addTrigger({
-    name: "Monitor all sql statements",
-    expression: "dice.gamesession",
-    statement: MySQLEvents.STATEMENTS.ALL,
-    onEvent: (e) => {
-      currentData = e.afffectedRows;
-      let data;
-      //console.log("afffectedRows ", e.affectedRows[0].before);
-      switch (e.type) {
-        case "DELETE":
-          data = currentData[0].before;
-          // Remove user from room
-          Object.keys(rooms).forEach((roomId) => {
-            if (rooms[roomId].players[socket.id]) {
-              delete rooms[roomId].players[socket.id];
-              if (Object.keys(rooms[roomId].players).length === 0) {
-                delete rooms[roomId];
-              }
-            }
-          });
-          break;
-        case "UPDATE":
-          // UPDATE user from room
+//   instance.addTrigger({
+//     name: "Monitor all sql statements",
+//     expression: "dice.gamesession",
+//     statement: MySQLEvents.STATEMENTS.ALL,
+//     onEvent: (e) => {
+//       currentData = e.afffectedRows;
+//       let data;
+//       //console.log("afffectedRows ", e.affectedRows[0].before);
+//       switch (e.type) {
+//         case "DELETE":
+//           data = currentData[0].before;
+//           // Remove user from room
+//           Object.keys(rooms).forEach((roomId) => {
+//             if (rooms[roomId].players[socket.id]) {
+//               delete rooms[roomId].players[socket.id];
+//               if (Object.keys(rooms[roomId].players).length === 0) {
+//                 delete rooms[roomId];
+//               }
+//             }
+//           });
+//           break;
+//         case "UPDATE":
+//           // UPDATE user from room
 
-          break;
+//           break;
 
-        case "INSERT":
-          // UPDATE user from room
-         // console.log("new user added");
-          // console.log("user info", e.affectedRows[0].after );
-         // let data = e.affectedRows[0].after;
-          // console.log("user data : ",data);
-         // console.log("user info : ", data.PlayerId, "  : ", data.SessionId);
-          // io.emit('joinRoom', { userId : data.playerId ,roomId :  data.sessionId})
-          break;
-        default:
-          break;
-      }
-    },
-  });
+//         case "INSERT":
+//           // UPDATE user from room
+//          // console.log("new user added");
+//           // console.log("user info", e.affectedRows[0].after );
+//          // let data = e.affectedRows[0].after;
+//           // console.log("user data : ",data);
+//          // console.log("user info : ", data.PlayerId, "  : ", data.SessionId);
+//           // io.emit('joinRoom', { userId : data.playerId ,roomId :  data.sessionId})
+//           break;
+//         default:
+//           break;
+//       }
+//     },
+//   });
 
-  instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
-  instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
-};
+//   instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
+//   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
+// };
 
-program().then();
+// program().then();
 
 
 
@@ -234,13 +239,18 @@ io.on("connection", (socket) => {
   socket.on("send_message_to_room", (room, message) => {
     console.log('send_message_to_room hit :', room )
     if (rooms[room]) {
-      io.to(room).emit('roomMessage', message);
+      console.log('send_message_to_room room found :', room )
+      //socket.rooms[room].emit('send_message_to_room', message);
+      io.to(room.toString()).emit('send_message_to_room', message);
     }
   });
   socket.on("scoreResult", (data) => {
     socket.broadcast.emit("scoreResult", data);
   });
-
+  
+  // setInterval(() => {
+  //   socket.emit('messageFromServer', { message: 'Hello from server' });
+  // }, 5000);
   socket.on("disconnect", () => {
     for (const room in rooms) {
       rooms[room].players = rooms[room].players.filter(player => player.id !== socket.id);
@@ -255,7 +265,9 @@ io.on("connection", (socket) => {
   console.log('Player disconnected:', socket.id);
   });
 });
-
+server.prependListener("request", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+});
 server.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
