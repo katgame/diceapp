@@ -146,12 +146,18 @@ app.get("/rooms", (req, res) => {
   res.json(JSON.parse(response));
 });
 app.get("/throwDice/room/:roomId", (req, res) => {
+  console.log('req' ,req)
   const roomId = req.params.roomId;
+  console.log('roomId' ,roomId)
   const sockets = rooms[roomId];
-
-  if (sockets && sockets.length > 0) {
-    sockets.forEach((socketId) => {
-      io.to(socketId).emit("throwDice");
+  console.log('rooms ' ,rooms)
+  console.log('sockets from room ' ,sockets)
+  if (sockets) {
+    console.log('sockets entered after if')
+    console.log('sockets.userMap : ', sockets.userMap)
+    sockets.userMap.forEach((data) => {
+      console.log('data from loop ' ,data)
+      io.to(data.socketId).emit("throwDice");
     });
     res.send(`Dice roll triggered for room ${roomId}`);
   } else {

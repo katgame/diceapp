@@ -150,6 +150,12 @@ export class GameStoreService {
     this.state.$sessionInfo.set(sessionInfo);
   }
 
+    // Set session Info
+
+    clearSessionInfo(sessionInfo: any) {
+      this.state.$sessionInfo.set(null);
+    }
+
   // set Default Game Container
 
   setDefaultGameContainer() {

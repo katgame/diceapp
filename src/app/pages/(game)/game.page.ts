@@ -38,12 +38,22 @@ export default class GamePageComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     //this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/');
-    console.log(`ngOnInit test`);
+   
     this.gameStoreService.$sessionInfo.subscribe((data) => {
-      this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.sessionInfo.id);
+      const id = data.sessionInfo?.id;
+      if(id !== undefined) {
+        console.log(`new rquest test`);
+        this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.sessionInfo.id);
+        this.sessionInfo = data.sessionInfo;
+      } else {
+        console.log(`update rquest test`);
+       // this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.id);
+        this.sessionInfo = data;
+      }
+   
       console.log('sessionInfo Gamer', data);
      //this.socketService.joinRoom(data.sessionInfo.id,)
-      this.sessionInfo = data;
+     
     })
     this.broadcastSubscription = this.socketService.onBroadcast('messageFromServer').subscribe((data: any) => {
     
@@ -55,6 +65,7 @@ export default class GamePageComponent implements OnInit, OnDestroy {
       switch(data.messageType) {
         case 0 : 
           //update users on screen
+          console.log('correct case entered');
           this.updatePlayerUI();
         break;
         case 1 : 
@@ -82,10 +93,10 @@ export default class GamePageComponent implements OnInit, OnDestroy {
 
   }
   updatePlayerUI() {
-   
-    this.diceService.getSessionInformationById(this.sessionInfo.sessionInfo.id).subscribe((res: any) => {
+    const id = this.sessionInfo.id;
+    this.diceService.getSessionInformationById(id).subscribe((res: any) => {
       if(res) {
-        
+        console.log('res', res);
         this.gameService.JoinGame(res);
       }
     } )

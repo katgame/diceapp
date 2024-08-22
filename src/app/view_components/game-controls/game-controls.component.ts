@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  NgZone,
+  OnInit,
+} from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { DiceService } from '../../services/game-api.service';
@@ -12,15 +19,15 @@ import { TokenStorageService } from '../../guards/token-storage.service';
 import { register } from 'swiper/element/bundle';
 
 @Component({
-    selector: 'game-controls',
-    standalone: true,
-    imports: [CommonModule, PlayerAvaterComponent],
-    template: `
-    
-    <section class="absolute top-0 left-0 w-screen h-screen flex flex-col justify-between">
-
-        <!-- Results -->
-        <!-- <div class="absolute w-full top-[35vh] flex justify-center space-x-8 my-4 ">
+  selector: 'game-controls',
+  standalone: true,
+  imports: [CommonModule, PlayerAvaterComponent],
+  template: `
+    <section
+      class="absolute top-0 left-0 w-screen h-screen flex flex-col justify-between"
+    >
+      <!-- Results -->
+      <!-- <div class="absolute w-full top-[35vh] flex justify-center space-x-8 my-4 ">
             <div class="flex flex-row justify-between w-full max-w-screen-lg">
                 <div class="flex justify-center space-x-8">
                     <div class="flex flex-col ">
@@ -64,15 +71,18 @@ import { register } from 'swiper/element/bundle';
                 </div>
             </div>
         </div> -->
-        <!-- Avatars and Scores Section -->
-        <div class="flex justify-center space-x-8 my-4">
-            <div *ngIf="sessionInfo">  
-                <player-avatar  *ngFor="let player of sessionInfo.sessionInfo.gameSession" [player]="player"></player-avatar>           </div>
-           
+      <!-- Avatars and Scores Section -->
+      <div class="flex justify-center space-x-8 my-4">
+        <div *ngIf="sessionInfo">
+          <player-avatar
+            *ngFor="let player of sessionInfo.gameSession"
+            [player]="player"
+          ></player-avatar>
         </div>
-        
-        <!-- Actions Panel -->
-        <!-- <div class="flex justify-center space-x-4 my-4 relative -top-12">
+      </div>
+
+      <!-- Actions Panel -->
+       <div class="flex justify-center space-x-4 my-4 relative -top-12">
             @if(sessionInfo) {
             <button class="bg-[#d9d6ab] border-1 outline-zinc-600 outline outline-2 bg-opacity-40 text-zinc-700 font-bold py-2 px-4 rounded-2xl hover:bg-zinc-200" (click)="throwDice()">
                 Throw Dice
@@ -85,9 +95,9 @@ import { register } from 'swiper/element/bundle';
                 Give Up
             </button>
             
-        </div> -->
-        <!--  -->
-        <!-- <div class="flex flex-row-reverse">
+        </div> 
+
+      <div class="flex flex-row-reverse">
             <div class="relative bottom-[15vh] right-[3vh] md:right-[15vh] md:bottom-[15vh]">
 
                 <button (click)="exitGame(null)" type="button" class="group absolute bg-white bg-opacity-10 -top-[5rem] w-14 h-14 text-white border-2 border-white hover:bg-white hover:text-zinc-900 focus:ring-4 focus:outline-none focus:ring-blue-50 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-white dark:text-white dark:hover:text-zinc-900 dark:focus:ring-blue-50 dark:hover:bg-white">
@@ -103,93 +113,93 @@ import { register } from 'swiper/element/bundle';
                 </button>
 
             </div>
-        </div> -->
-
+        </div> 
     </section>
-
-    `,
-    styles: [`
-    /* Add a custom animation if desired */
-        @keyframes spin {
+  `,
+  styles: [
+    `
+      /* Add a custom animation if desired */
+      @keyframes spin {
         to {
-            transform: rotate(360deg);
+          transform: rotate(360deg);
         }
-        }
+      }
 
-        .animate-spin {
+      .animate-spin {
         animation: spin 1s linear infinite;
-        }
-    `]
+      }
+    `,
+  ],
 })
 export default class GameControlsComponent implements OnInit, AfterViewInit {
-    @Input() schools: any;
-    @Input() profile: any;
-    @Input() loginData: any;
-    @Input() sessionInfo: any;
-    isSpinning = false;
-    scoreResult: string = '';
-    constructor(
-        private diceApi: DiceService, 
-        private router: Router, 
-        private gameService: GameService,
-        private ngZone: NgZone,
-        private socketService: SocketService,
-        private cdr: ChangeDetectorRef,
-    ) {
-        
+  @Input() schools: any;
+  @Input() profile: any;
+  @Input() loginData: any;
+  @Input() sessionInfo: any;
+  isSpinning = false;
+  scoreResult: string = '';
+  constructor(
+    private diceApi: DiceService,
+    private router: Router,
+    private gameService: GameService,
+    private ngZone: NgZone,
+    private socketService: SocketService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
+  ngOnInit(): void {
+    //  window.addEventListener('message', this.receiveMessage.bind(this), false);
+    // Register icons
+  }
+  ngAfterViewInit() {
+    // Check if the user is logged in
+    // if(!this.sessionInfo) {
+    //     this.exitGame(null);
+    // }
+  }
+
+  receiveMessage(event: MessageEvent): void {
+    // Ensure the message is from the expected origin
+    if (event.origin === 'http://localhost:3000') {
+      this.ngZone.run(() => {
+        this.scoreResult = event.data.score;
+        console.log('Score Result:', this.scoreResult);
+      });
     }
+  }
 
-    ngOnInit(): void {
-      //  window.addEventListener('message', this.receiveMessage.bind(this), false);
-        // Register icons
-        
-    }
-    ngAfterViewInit() {
-        // Check if the user is logged in
-        // if(!this.sessionInfo) { 
-        //     this.exitGame(null);
-        // }
-    }
-
-
-    receiveMessage(event: MessageEvent): void {
-        // Ensure the message is from the expected origin
-        if (event.origin === 'http://localhost:3000') {
-          this.ngZone.run(() => {
-            this.scoreResult = event.data.score;
-            console.log('Score Result:', this.scoreResult);
-          });
-        }
-      }
-
-    throwDice() {
-        this.startSpinning()
-        this.socketService.throwDice();
-        const throwDice = fetch('http://localhost:3000/throwDice');
-        console.log('here:', document.querySelectorAll('iframe'));
-        document.querySelectorAll('iframe').forEach( (item: any) =>
-            console.log('Frame:::',item.contentWindow.document.body.querySelectorAll('#score-result'))
+  log() {
+    console.log('sessionInfo ', this.sessionInfo);
+  }
+  throwDice() {
+    this.startSpinning();
+    this.socketService.throwDice();
+    const throwDice = fetch('http://localhost:3000/throwDice/room/' + this.sessionInfo.id);
+    console.log('here:', document.querySelectorAll('iframe'));
+    document
+      .querySelectorAll('iframe')
+      .forEach((item: any) =>
+        console.log(
+          'Frame:::',
+          item.contentWindow.document.body.querySelectorAll('#score-result')
         )
-        
-    }
+      );
+  }
 
-    startSpinning() {
-        this.isSpinning = true;
-        setTimeout(() => {
-          this.isSpinning = false;
-        }, 1000); // Spins for 1 seconds
-      }
+  startSpinning() {
+    this.isSpinning = true;
+    setTimeout(() => {
+      this.isSpinning = false;
+    }, 1000); // Spins for 1 seconds
+  }
 
+  exitGame(navigationExtras: any) {
+    this.ngZone.run(() => {
+      this.router.navigate(['/dashboard']);
+    });
+  }
 
-    exitGame(navigationExtras: any) {
-        this.ngZone.run(() => {
-            this.router.navigate(['/dashboard']);
-        });
-    }
-
-    pressMore() {
-       alert('Press More');
-    }
+  pressMore() {
+    alert('Press More');
+  }
 }
-
