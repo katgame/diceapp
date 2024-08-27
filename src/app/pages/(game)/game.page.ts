@@ -94,6 +94,7 @@ export default class GamePageComponent implements OnInit, OnDestroy {
   }
   updatePlayerUI() {
     const id = this.sessionInfo.id;
+    console.log('this.sessionInfo', this.sessionInfo);
     this.diceService.getSessionInformationById(id).subscribe((res: any) => {
       if(res) {
         console.log('res', res);

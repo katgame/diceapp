@@ -155,10 +155,11 @@ app.get("/throwDice/room/:roomId", (req, res) => {
   if (sockets) {
     console.log('sockets entered after if')
     console.log('sockets.userMap : ', sockets.userMap)
-    sockets.userMap.forEach((data) => {
-      console.log('data from loop ' ,data)
-      io.to(data.socketId).emit("throwDice");
-    });
+    // sockets.userMap.forEach((data) => {
+    //   console.log('data from loop ' ,data)
+    //   io.to(data.socketId).emit("throwDice");
+    // });
+    io.to(roomId).emit("throwDice");
     res.send(`Dice roll triggered for room ${roomId}`);
   } else {
     res.status(404).send(`Room ${roomId} not found`);
