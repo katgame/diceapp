@@ -97,23 +97,7 @@ import { register } from 'swiper/element/bundle';
             
         </div> 
 
-      <div class="flex flex-row-reverse">
-            <div class="relative bottom-[15vh] right-[3vh] md:right-[15vh] md:bottom-[15vh]">
 
-                <button (click)="exitGame(null)" type="button" class="group absolute bg-white bg-opacity-10 -top-[5rem] w-14 h-14 text-white border-2 border-white hover:bg-white hover:text-zinc-900 focus:ring-4 focus:outline-none focus:ring-blue-50 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-white dark:text-white dark:hover:text-zinc-900 dark:focus:ring-blue-50 dark:hover:bg-white">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 7V12M8 8.99951C7.37209 9.83526 7 10.8742 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 10.8742 16.6279 9.83526 16 8.99951M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                    </button>  
-                
-                <button (click)="pressMore()" type="button" class="group bg-white bg-opacity-10  absolute -top-[1rem] -left-[5rem] w-14 h-14 text-white border-2 border-white hover:bg-white hover:text-zinc-900 focus:ring-4 focus:outline-none focus:ring-blue-50 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-white dark:text-white dark:hover:text-zinc-900 dark:focus:ring-blue-50 dark:hover:bg-white">
-                    <svg  class="group-hover:fill-black" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <circle class="st0" cx="16" cy="16" r="10"></circle> <circle class="st0" cx="16" cy="16" r="14"></circle> <line class="st0 " x1="16" y1="2" x2="16" y2="6"></line> <line class="st0" x1="6.1" y1="6.1" x2="8.9" y2="8.9"></line> <line class="st0" x1="2" y1="16" x2="6" y2="16"></line> <line class="st0" x1="6.1" y1="25.9" x2="8.9" y2="23.1"></line> <line class="st0" x1="16" y1="30" x2="16" y2="26"></line> <line class="st0" x1="25.9" y1="25.9" x2="23.1" y2="23.1"></line> <line class="st0" x1="30" y1="16" x2="26" y2="16"></line> <line class="st0" x1="25.9" y1="6.1" x2="23.1" y2="8.9"></line> <polygon class="st0" points="16,11 12,16 16,21 20,16 "></polygon> </g></svg>
-                </button>  
-
-                <button (click)="throwDice()" type="button" class="group bg-white bg-opacity-10  text-white border-2 border-white hover:bg-white hover:text-zinc-900 focus:ring-4 focus:outline-none focus:ring-blue-50 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-white dark:text-white dark:hover:text-zinc-900 dark:focus:ring-blue-50 dark:hover:bg-white">
-                    <svg  [ngClass]="{ 'animate-spin': isSpinning }" class="fill-white group-hover:fill-black group-hover:stroke-black" width="60px" height="60px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path class="group-hover:stroke-black" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" d="M448,341.37V170.61A32,32,0,0,0,432.11,143l-152-88.46a47.94,47.94,0,0,0-48.24,0L79.89,143A32,32,0,0,0,64,170.61V341.37A32,32,0,0,0,79.89,369l152,88.46a48,48,0,0,0,48.24,0l152-88.46A32,32,0,0,0,448,341.37Z"/><polyline class="group-hover:stroke-black" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" points="69 153.99 256 263.99 443 153.99"/><line class="group-hover:stroke-black" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" x1="256" y1="463.99" x2="256" y2="263.99"/><ellipse cx="256" cy="152" rx="24" ry="16"/><ellipse cx="208" cy="296" rx="16" ry="24"/><ellipse cx="112" cy="328" rx="16" ry="24"/><ellipse cx="304" cy="296" rx="16" ry="24"/><ellipse cx="400" cy="240" rx="16" ry="24"/><ellipse cx="304" cy="384" rx="16" ry="24"/><ellipse cx="400" cy="328" rx="16" ry="24"/></svg>
-                    <span class="sr-only">Icon description</span>
-                </button>
-
-            </div>
-        </div> 
     </section>
   `,
   styles: [

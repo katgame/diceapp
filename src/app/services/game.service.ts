@@ -1,7 +1,8 @@
 // Start angular injectable service
-import { Injectable } from '@angular/core';
-import { GameStoreService } from '../store/game.store';
+
 import { GameDataStoreService } from '../store/game-data.store';
+import { GameStoreService } from '../store/game.store';
+import { Injectable } from '@angular/core';
 import { TokenStorageService } from '../guards/token-storage.service';
 
 @Injectable({
@@ -20,7 +21,7 @@ export class GameService {
         this.gameStoreService.setDefaultGameContainer()
         this.gameStoreService.setLoginData(this.tokenService.getUser());
 
-        
+        console.log('initializeGameStore : ',  this.tokenService.getUser().userDetails)
         this.setUserProfile(this.tokenService.getUser().userDetails, this.tokenService.getUser().userAccount)
 
         this.dataStore.$dashboard.subscribe((res : any) => {

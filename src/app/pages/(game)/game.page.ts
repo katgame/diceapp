@@ -40,19 +40,25 @@ export default class GamePageComponent implements OnInit, OnDestroy {
     //this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/');
    
     this.gameStoreService.$sessionInfo.subscribe((data) => {
-      const id = data.sessionInfo?.id;
-      if(id !== undefined) {
-        console.log(`new rquest test`);
-        this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.sessionInfo.id);
-        this.sessionInfo = data.sessionInfo;
+      if(data) {
+        console.log('sessionInfo Gamer', data);
+        const id = data.sessionInfo?.id;
+        if(id !== undefined) {
+          console.log(`new rquest test`);
+          this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.sessionInfo.id);
+          this.sessionInfo = data.sessionInfo;
+        } else {
+          console.log(`update rquest test`);
+         // this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.id);
+          this.sessionInfo = data;
+        }
+     
+        console.log('sessionInfo Gamer', data);
+       //this.socketService.joinRoom(data.sessionInfo.id,)
       } else {
-        console.log(`update rquest test`);
-       // this.gameUrl = this.sanitizer.bypassSecurityTrustResourceUrl('http://localhost:3000/room/' + data.id);
-        this.sessionInfo = data;
+        alert('data empty');
       }
-   
-      console.log('sessionInfo Gamer', data);
-     //this.socketService.joinRoom(data.sessionInfo.id,)
+    
      
     })
     this.broadcastSubscription = this.socketService.onBroadcast('messageFromServer').subscribe((data: any) => {
@@ -75,20 +81,6 @@ export default class GamePageComponent implements OnInit, OnDestroy {
 
       }
     });
-  //   this.socket.on('send_message_to_room', (message : Message) => {
-  //     console.log(`roomMessage called: ${message}`);
-  //     switch(message.messageType) {
-  //       case MessageType.joinGame : 
-  //         //update users on screen
-  //         this.updatePlayerUI();
-  //       break;
-  //       case MessageType.gameResult : 
-  //       break;
-  //       case MessageType.default : 
-  //       break;
-
-  //     }
-  // });
    
 
   }

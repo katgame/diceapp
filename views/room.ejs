@@ -2,9 +2,8 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Room <%= roomId %></title>
+  <title>Three.js Dice Roller | Codrops</title>
   <meta name="description" content="Demo for the tutorial on how to code a dice roller with Three.js and cannon-es" />
   <meta name="keywords" content="3d dice, three.js, cannon-es, webgl, rolling dice" />
   <meta name="author" content="Codrops" />
@@ -22,12 +21,12 @@
   <script src="//tympanus.net/codrops/adpacks/analytics.js"></script>
 </head>
 <body>
-  <h1>Room ID: <%= roomId %></h1>
   <main>
     <div class="content">
       <canvas id="canvas"></canvas>
       <div class="ui-controls">
         <div class="score">Score: <span id="score-result"></span></div>
+        <button id="roll-btn">Throw the dice</button>
       </div>
     </div>
   </main>
@@ -43,18 +42,20 @@
   <script src="https://tympanus.net/codrops/adpacks/cda_sponsor.js"></script>
   <script type="module" src="/main.js"></script>
   <script>
-   const roomId = "<%= roomId %>";
-    socket.emit("joinRoom", "user123", roomId); // Replace with actual user ID
+    const socket = io();
 
-    // Emit the throwDice event on button click
-    document.getElementById("rollBtn").addEventListener("click", () => {
-      socket.emit("throwDice");
-    });
+    // Register the user ID and room ID with the server
+    // const userId = 'user1'; // Replace with actual user ID logic
+    // const roomId = 'room1'; // Replace with actual room ID logic
+    // socket.emit('register', userId, roomId);
+    // socket.emit('register', 'user2', 'room1');
 
-    // Listen for the dice roll event
-    socket.on("throwDice", () => {
-      alert("Dice rolled!");
-      // Add dice roll logic here
+    // socket.emit('register', 'user11', 'room2');
+    // socket.emit('register', 'user22','room2');
+    // socket.emit('register', 'user33', 'room2');
+   // Listen for the "throwDice" event from the server
+    socket.on('throwDice', () => {
+      document.getElementById('roll-btn').click();
     });
   </script>
 </body>
